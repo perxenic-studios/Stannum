@@ -1,7 +1,9 @@
 package dev.perxenic.stannic;
 
 import dev.perxenic.stannic.registry.StannicTabs;
+import dev.perxenic.stannic.registry.block.StannicBlocks;
 import dev.perxenic.stannic.registry.item.StannicItems;
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -21,6 +23,7 @@ public class Stannic {
     public Stannic(IEventBus modEventBus, ModContainer modContainer) {
         REGISTRATE.registerEventListeners(modEventBus);
 
+        StannicBlocks.register();
         StannicItems.register();
         StannicTabs.register(modEventBus);
 
