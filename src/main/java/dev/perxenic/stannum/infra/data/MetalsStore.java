@@ -2,7 +2,6 @@ package dev.perxenic.stannum.infra.data;
 
 import com.simibubi.create.Create;
 import com.simibubi.create.foundation.data.recipe.CommonMetal;
-import com.simibubi.create.foundation.data.recipe.Mods;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
