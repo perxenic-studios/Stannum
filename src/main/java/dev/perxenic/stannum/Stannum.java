@@ -3,6 +3,7 @@ package dev.perxenic.stannum;
 import dev.perxenic.stannum.registry.StannumCreativeModeTabs;
 import dev.perxenic.stannum.registry.block.StannumBlocks;
 import dev.perxenic.stannum.registry.item.StannumItems;
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -27,5 +28,9 @@ public class Stannum {
         StannumCreativeModeTabs.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+    }
+
+    public static ResourceLocation snLoc(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 }
