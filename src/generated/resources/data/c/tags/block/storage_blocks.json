@@ -1,7 +1,5 @@
 {
   "values": [
-    "stannum:tin_ore",
-    "stannum:deepslate_tin_ore",
     "stannum:raw_tin_block",
     "stannum:tin_block"
   ]
