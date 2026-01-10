@@ -28,7 +28,6 @@ import static dev.perxenic.stannic.Stannic.REGISTRATE;
 public class StannicBlocks {
     public static BlockEntry<Block> TIN_ORE = REGISTRATE.block("tin_ore", Block::new)
             .initialProperties(() -> Blocks.COPPER_ORE)
-            .properties(p -> p.mapColor(MapColor.METAL))
             .transform(pickaxeOnly())
             .loot((lt, b) -> {
                 HolderLookup.RegistryLookup<Enchantment> enchantLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
@@ -46,6 +45,29 @@ public class StannicBlocks {
                     Tags.Blocks.ORES, Tags.Items.ORES,
                     CommonMetal.TIN.ores.blocks(), CommonMetal.TIN.ores.items(),
                     Tags.Blocks.ORES_IN_GROUND_STONE, Tags.Items.ORES_IN_GROUND_STONE
+            )))
+            .build()
+            .register();
+
+    public static BlockEntry<Block> DEEPSLATE_TIN_ORE = REGISTRATE.block("deepslate_tin_ore", Block::new)
+            .initialProperties(() -> Blocks.DEEPSLATE_COPPER_ORE)
+            .transform(pickaxeOnly())
+            .loot((lt, b) -> {
+                HolderLookup.RegistryLookup<Enchantment> enchantLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
+                Holder<Enchantment> fortune = enchantLookup.getOrThrow(Enchantments.FORTUNE);
+
+                lt.add(b,
+                        lt.createSilkTouchDispatchTable(b,
+                                lt.applyExplosionDecay(b, LootItem.lootTableItem(StannicItems.RAW_TIN))
+                                        .apply(ApplyBonusCount.addOreBonusCount(fortune))
+                        )
+                );
+            })
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(tagBlockAndItem(Map.of(
+                    Tags.Blocks.ORES, Tags.Items.ORES,
+                    CommonMetal.TIN.ores.blocks(), CommonMetal.TIN.ores.items(),
+                    Tags.Blocks.ORES_IN_GROUND_DEEPSLATE, Tags.Items.ORES_IN_GROUND_DEEPSLATE
             )))
             .build()
             .register();
