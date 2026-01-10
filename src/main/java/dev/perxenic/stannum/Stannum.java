@@ -1,5 +1,6 @@
 package dev.perxenic.stannum;
 
+import dev.perxenic.stannum.registry.StannumMetals;
 import dev.perxenic.stannum.registry.StannumCreativeModeTabs;
 import dev.perxenic.stannum.registry.block.StannumBlocks;
 import dev.perxenic.stannum.registry.item.StannumItems;
@@ -22,6 +23,8 @@ public class Stannum {
 
     public Stannum(IEventBus modEventBus, ModContainer modContainer) {
         REGISTRATE.registerEventListeners(modEventBus);
+
+        StannumMetals.register();
 
         StannumBlocks.register();
         StannumItems.register();
