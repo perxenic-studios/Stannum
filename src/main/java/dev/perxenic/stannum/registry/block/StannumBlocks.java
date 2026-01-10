@@ -28,6 +28,7 @@ public class StannumBlocks {
     public static BlockEntry<Block> RAW_TIN_BLOCK;
     public static BlockEntry<Block> TIN_BLOCK;
 
+    public static BlockEntry<Block> BRONZE_BLOCK;
 
     public static void register() {
         // Tin is known to be natural so ores and raw storage blocks will never be null
@@ -99,6 +100,18 @@ public class StannumBlocks {
                 .tag(BlockTags.NEEDS_IRON_TOOL)
                 .transform(tagBlockAndItem(Map.of(
                         StannumMetals.TIN.storageBlocks.blocks(), StannumMetals.TIN.storageBlocks.items()
+                )))
+                .build()
+                .register();
+
+        BRONZE_BLOCK = REGISTRATE.block("bronze_block", Block::new)
+                .initialProperties(() -> Blocks.IRON_BLOCK)
+                .properties(p -> p.mapColor(MapColor.GOLD))
+                .transform(pickaxeOnly())
+                .lang("Block of Bronze")
+                .tag(BlockTags.NEEDS_IRON_TOOL)
+                .transform(tagBlockAndItem(Map.of(
+                        StannumMetals.BRONZE.storageBlocks.blocks(), StannumMetals.BRONZE.storageBlocks.items()
                 )))
                 .build()
                 .register();

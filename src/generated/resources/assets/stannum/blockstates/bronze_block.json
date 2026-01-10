@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "stannum:block/bronze_block"
+    }
+  }
+}
