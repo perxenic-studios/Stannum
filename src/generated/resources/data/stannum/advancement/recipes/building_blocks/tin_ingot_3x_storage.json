@@ -3,15 +3,15 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "stannum:tin_ingots_from_block"
+        "recipe": "stannum:tin_ingot_3x_storage"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "has_tin_block": {
+    "has_tin_ingot": {
       "conditions": {
         "items": [
           {
-            "items": "stannum:tin_block"
+            "items": "stannum:tin_ingot"
           }
         ]
       },
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_tin_block"
+      "has_tin_ingot"
     ]
   ],
   "rewards": {
     "recipes": [
-      "stannum:tin_ingots_from_block"
+      "stannum:tin_ingot_3x_storage"
     ]
   }
 }

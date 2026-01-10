@@ -6,7 +6,6 @@ import dev.perxenic.stannum.registry.item.StannumItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
@@ -49,7 +48,7 @@ public final class StannumRecipeGen extends RecipeProvider {
                 100,
                 "tin"
         );
-        metalCompacting(
+        metalStorage(
                 recipeOutput,
                 StannumItems.TIN_NUGGET,
                 StannumItems.TIN_INGOT,
@@ -133,63 +132,59 @@ public final class StannumRecipeGen extends RecipeProvider {
 
     private static void storage3x(
             RecipeOutput recipeOutput,
-            RecipeCategory category,
-            ItemLike output,
-            ItemLike input,
-            String group,
-            String hasName,
-            ResourceLocation id
+            RecipeCategory storageCategory,
+            RecipeCategory retrievalCategory,
+            ItemLike unit,
+            ItemLike whole,
+            String unitName,
+            String wholeName,
+            String group
     ) {
         new ShapedRecipeBuilder(
-                category,
-                new ItemStack(output))
+                storageCategory,
+                new ItemStack(whole))
                 .pattern("###")
                 .pattern("###")
                 .pattern("###")
-                .define('#', input)
+                .define('#', unit)
                 .group(group)
-                .unlockedBy(hasName, has(input))
-                .save(recipeOutput, id);
+                .unlockedBy("has_"+unitName, has(unit))
+                .save(recipeOutput, snLoc(unitName+"_3x_storage"));
+        new ShapelessRecipeBuilder(
+                retrievalCategory,
+                new ItemStack(unit, 9))
+                .requires(whole)
+                .group(group)
+                .unlockedBy("has_"+wholeName, has(whole))
+                .save(recipeOutput, snLoc(wholeName+"_3x_retrieval"));
     }
 
-    private static void metalCompacting(
+    private static void metalStorage(
             RecipeOutput recipeOutput,
             ItemLike nugget,
             ItemLike ingot,
             ItemLike block,
             String metalName
     ) {
-        new ShapelessRecipeBuilder(
-                RecipeCategory.MISC,
-                new ItemStack(ingot, 9))
-                .requires(block)
-                .group(metalName)
-                .unlockedBy("has_%s_block".formatted(metalName), has(block))
-                .save(recipeOutput, snLoc(metalName+"_ingots_from_block"));
-        new ShapelessRecipeBuilder(
-                RecipeCategory.MISC,
-                new ItemStack(nugget, 9))
-                .requires(ingot)
-                .group(metalName)
-                .unlockedBy("has_%s_ingot".formatted(metalName), has(ingot))
-                .save(recipeOutput, snLoc(metalName+"_nuggets_from_ingot"));
         storage3x(
                 recipeOutput,
                 RecipeCategory.MISC,
-                ingot,
+                RecipeCategory.MISC,
                 nugget,
-                metalName,
-                "has_%s_nuggets".formatted(metalName),
-                snLoc(metalName+"_ingot_from_nuggets")
+                ingot,
+                metalName+"_nugget",
+                metalName+"_ingot",
+                metalName
         );
         storage3x(
                 recipeOutput,
                 RecipeCategory.BUILDING_BLOCKS,
-                block,
+                RecipeCategory.MISC,
                 ingot,
-                metalName,
-                "has_%s_ingot".formatted(metalName),
-                snLoc(metalName+"_block_from_ingots")
+                block,
+                metalName+"_ingot",
+                metalName+"_block",
+                metalName
         );
     }
 }
