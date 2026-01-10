@@ -1,0 +1,13 @@
+{
+  "itemGroup.stannic": "Example Mod Tab",
+  "block.stannic.example_block": "Example Block",
+  "item.stannic.example_item": "Example Item",
+
+  "stannic.configuration.title": "Stannic Configs",
+  "stannic.configuration.section.stannic.common.toml": "Stannic Configs",
+  "stannic.configuration.section.stannic.common.toml.title": "Stannic Configs",
+  "stannic.configuration.items": "Item List",
+  "stannic.configuration.logDirtBlock": "Log Dirt Block",
+  "stannic.configuration.magicNumberIntroduction": "Magic Number Text",
+  "stannic.configuration.magicNumber": "Magic Number"
+}
