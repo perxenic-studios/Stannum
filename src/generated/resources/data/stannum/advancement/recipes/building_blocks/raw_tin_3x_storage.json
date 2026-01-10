@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_raw_tin": {
+      "conditions": {
+        "items": [
+          {
+            "items": "stannum:raw_tin"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "stannum:raw_tin_3x_storage"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_raw_tin"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "stannum:raw_tin_3x_storage"
+    ]
+  }
+}

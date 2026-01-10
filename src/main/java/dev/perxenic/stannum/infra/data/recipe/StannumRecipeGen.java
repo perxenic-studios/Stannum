@@ -55,6 +55,16 @@ public final class StannumRecipeGen extends RecipeProvider {
                 StannumBlocks.TIN_BLOCK,
                 "tin"
         );
+        storage3x(
+                recipeOutput,
+                RecipeCategory.BUILDING_BLOCKS,
+                RecipeCategory.MISC,
+                StannumItems.RAW_TIN,
+                StannumBlocks.RAW_TIN_BLOCK,
+                "raw_tin",
+                "raw_tin_block",
+                "tin"
+        );
     }
 
     protected static void oreSmelting(
