@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "stannum:block/tin_ore"
+    }
+  }
+}

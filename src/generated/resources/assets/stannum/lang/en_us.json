@@ -1,0 +1,8 @@
+{
+  "block.stannum.deepslate_tin_ore": "Deepslate Tin Ore",
+  "block.stannum.tin_ore": "Tin Ore",
+  "item.stannum.raw_tin": "Raw Tin",
+  "item.stannum.tin_ingot": "Tin Ingot",
+  "item.stannum.tin_nugget": "Tin Nugget",
+  "itemGroup.stannum.base": "Stannum"
+}
