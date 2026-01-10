@@ -1,7 +1,6 @@
 {
-  "itemGroup.stannic": "Example Mod Tab",
-  "block.stannic.example_block": "Example Block",
-  "item.stannic.example_item": "Example Item",
+  "itemGroup.stannic.main": "Stannic",
+  "item.stannic.tin_ingot": "Tin Ingot",
 
   "stannic.configuration.title": "Stannic Configs",
   "stannic.configuration.section.stannic.common.toml": "Stannic Configs",
