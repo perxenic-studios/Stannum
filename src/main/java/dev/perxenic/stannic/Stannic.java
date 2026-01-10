@@ -1,9 +1,8 @@
 package dev.perxenic.stannic;
 
-import dev.perxenic.stannic.registry.StannicTabs;
+import dev.perxenic.stannic.registry.StannicCreativeModeTabs;
 import dev.perxenic.stannic.registry.block.StannicBlocks;
 import dev.perxenic.stannic.registry.item.StannicItems;
-import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -18,14 +17,14 @@ public class Stannic {
     public static final String MOD_ID = "stannic";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID)
-            .defaultCreativeTab(StannicTabs.STANNIC_TAB.getKey());
+            .defaultCreativeTab(StannicCreativeModeTabs.STANNIC_TAB.getKey());
 
     public Stannic(IEventBus modEventBus, ModContainer modContainer) {
         REGISTRATE.registerEventListeners(modEventBus);
 
         StannicBlocks.register();
         StannicItems.register();
-        StannicTabs.register(modEventBus);
+        StannicCreativeModeTabs.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

@@ -12,13 +12,13 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import static dev.perxenic.stannic.Stannic.MOD_ID;
 
 
-public class StannicTabs {
+public class StannicCreativeModeTabs {
     public static DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
 
-    public static DeferredHolder<CreativeModeTab, CreativeModeTab> STANNIC_TAB = CREATIVE_MODE_TABS.register("main",
+    public static DeferredHolder<CreativeModeTab, CreativeModeTab> STANNIC_TAB = CREATIVE_MODE_TABS.register("base",
             () -> CreativeModeTab.builder()
-                    .title(Component.translatable("itemGroup.%s.main".formatted(MOD_ID)))
+                    .title(Component.translatable("itemGroup.%s.base".formatted(MOD_ID)))
                     .withTabsBefore(AllCreativeModeTabs.BASE_CREATIVE_TAB.getKey())
                     .icon(() -> StannicItems.TIN_INGOT.asStack()) //TODO: Replace with actual item from the mod
                     .build());
