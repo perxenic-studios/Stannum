@@ -1,10 +1,8 @@
 package dev.perxenic.stannum.infra.data;
 
 import com.simibubi.create.foundation.data.TagGen;
-import com.simibubi.create.foundation.data.recipe.CommonMetal;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
@@ -20,21 +18,49 @@ public class StannumRegistrateTags {
 
     private static void genBlockTags(RegistrateTagsProvider<Block> provIn) {
         TagGen.CreateTagsProvider<Block> prov = new TagGen.CreateTagsProvider<>(provIn, Block::builtInRegistryHolder);
+
+        MetalsStore.forEachMetal((location, metal) -> {
+            prov.tag(Tags.Blocks.STORAGE_BLOCKS)
+                    .addOptionalTag(metal.storageBlocks.blocks());
+
+            if (metal.natural) {
+                assert metal.ores != null;
+                prov.tag(Tags.Blocks.ORES)
+                        .addOptionalTag(metal.ores.blocks());
+
+                assert metal.rawStorageBlocks != null;
+                prov.tag(Tags.Blocks.ORES)
+                        .addOptionalTag(metal.rawStorageBlocks.blocks());
+            }
+        });
     }
 
     private static void genItemTags(RegistrateTagsProvider<Item> provIn) {
         TagGen.CreateTagsProvider<Item> prov = new TagGen.CreateTagsProvider<>(provIn, Item::builtInRegistryHolder);
 
-        prov.tag(Tags.Items.RAW_MATERIALS)
-                .addTag(CommonMetal.TIN.rawOres);
+        MetalsStore.forEachMetal((location, metal) -> {
+            prov.tag(Tags.Items.INGOTS)
+                    .addOptionalTag(metal.ingots);
 
-        prov.tag(Tags.Items.INGOTS)
-                .addTag(CommonMetal.TIN.ingots);
+            prov.tag(Tags.Items.NUGGETS)
+                    .addOptionalTag(metal.nuggets);
 
-        prov.tag(Tags.Items.NUGGETS)
-                .addTag(CommonMetal.TIN.nuggets);
+            prov.tag(Tags.Items.STORAGE_BLOCKS)
+                    .addOptionalTag(metal.storageBlocks.items());
 
-        prov.tag(ItemTags.BEACON_PAYMENT_ITEMS)
-                .addTag(CommonMetal.TIN.ingots);
+            if (metal.natural) {
+                assert metal.ores != null;
+                prov.tag(Tags.Items.ORES)
+                        .addOptionalTag(metal.ores.items());
+
+                assert metal.rawMetals != null;
+                prov.tag(Tags.Items.RAW_MATERIALS)
+                        .addOptionalTag(metal.rawMetals);
+
+                assert metal.rawStorageBlocks != null;
+                prov.tag(Tags.Items.ORES)
+                        .addOptionalTag(metal.rawStorageBlocks.items());
+            }
+        });
     }
 }

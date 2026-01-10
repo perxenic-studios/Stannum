@@ -1,6 +1,76 @@
 {
   "values": [
-    "stannum:raw_tin_block",
-    "stannum:tin_block"
+    {
+      "id": "#c:storage_blocks/lead",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/uranium",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/tin",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/zinc",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/copper",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/iron",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/quicksilver",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/bronze",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/electrum",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/steel",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/nickel",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/silver",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/constantan",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/gold",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/osmium",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/brass",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/aluminum",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/platinum",
+      "required": false
+    }
   ]
 }

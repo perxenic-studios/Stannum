@@ -1,6 +1,108 @@
 {
   "values": [
-    "stannum:tin_ore",
-    "stannum:deepslate_tin_ore"
+    {
+      "id": "#c:ores/lead",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/raw_lead",
+      "required": false
+    },
+    {
+      "id": "#c:ores/uranium",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/raw_uranium",
+      "required": false
+    },
+    {
+      "id": "#c:ores/tin",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/raw_tin",
+      "required": false
+    },
+    {
+      "id": "#c:ores/zinc",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/raw_zinc",
+      "required": false
+    },
+    {
+      "id": "#c:ores/copper",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/raw_copper",
+      "required": false
+    },
+    {
+      "id": "#c:ores/iron",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/raw_iron",
+      "required": false
+    },
+    {
+      "id": "#c:ores/quicksilver",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/raw_quicksilver",
+      "required": false
+    },
+    {
+      "id": "#c:ores/nickel",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/raw_nickel",
+      "required": false
+    },
+    {
+      "id": "#c:ores/silver",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/raw_silver",
+      "required": false
+    },
+    {
+      "id": "#c:ores/gold",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/raw_gold",
+      "required": false
+    },
+    {
+      "id": "#c:ores/osmium",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/raw_osmium",
+      "required": false
+    },
+    {
+      "id": "#c:ores/aluminum",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/raw_aluminum",
+      "required": false
+    },
+    {
+      "id": "#c:ores/platinum",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/raw_platinum",
+      "required": false
+    }
   ]
 }

@@ -39,7 +39,6 @@ public class StannumBlocks {
             })
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(tagBlockAndItem(Map.of(
-                    Tags.Blocks.ORES, Tags.Items.ORES,
                     CommonMetal.TIN.ores.blocks(), CommonMetal.TIN.ores.items(),
                     Tags.Blocks.ORES_IN_GROUND_STONE, Tags.Items.ORES_IN_GROUND_STONE
             )))
@@ -62,7 +61,6 @@ public class StannumBlocks {
             })
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(tagBlockAndItem(Map.of(
-                    Tags.Blocks.ORES, Tags.Items.ORES,
                     CommonMetal.TIN.ores.blocks(), CommonMetal.TIN.ores.items(),
                     Tags.Blocks.ORES_IN_GROUND_DEEPSLATE, Tags.Items.ORES_IN_GROUND_DEEPSLATE
             )))
@@ -76,7 +74,6 @@ public class StannumBlocks {
             .lang("Block of Raw Tin")
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(tagBlockAndItem(Map.of(
-                    Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS,
                     CommonMetal.TIN.rawStorageBlocks.blocks(), CommonMetal.TIN.rawStorageBlocks.items()
             )))
             .build()
@@ -89,7 +86,6 @@ public class StannumBlocks {
             .lang("Block of Tin")
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(tagBlockAndItem(Map.of(
-                    Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS,
                     CommonMetal.TIN.storageBlocks.blocks(), CommonMetal.TIN.storageBlocks.items()
             )))
             .build()

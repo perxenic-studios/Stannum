@@ -2,6 +2,7 @@ package dev.perxenic.stannum.infra.data;
 
 import com.simibubi.create.Create;
 import com.simibubi.create.foundation.data.recipe.CommonMetal;
+import com.simibubi.create.foundation.data.recipe.Mods;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import static dev.perxenic.stannum.util.TagHelper.*;
 
@@ -31,6 +33,10 @@ public class MetalsStore {
 
     public static Metal get(ResourceLocation location) {
         return metalMap.get(location);
+    }
+
+    public static void forEachMetal(BiConsumer<ResourceLocation, Metal> action) {
+        metalMap.forEach(action);
     }
 
     public static class Metal {
@@ -84,7 +90,6 @@ public class MetalsStore {
         }
 
         public void makeNatural() {
-            this.natural = true;
             makeNatural(
                     itemLikeTagPrefix("ores/", location),
                     itemTagPrefix("raw_materials/", location),
