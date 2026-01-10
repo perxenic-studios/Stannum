@@ -19,6 +19,14 @@ public class StannumItems {
             .tag(StannumMetals.TIN.nuggets)
             .register();
 
+    public static ItemEntry<Item> BRONZE_INGOT = REGISTRATE.item("bronze_ingot", Item::new)
+            .tag(StannumMetals.BRONZE.ingots)
+            .register();
+
+    public static ItemEntry<Item> BRONZE_NUGGET = REGISTRATE.item("bronze_nugget", Item::new)
+            .tag(StannumMetals.BRONZE.nuggets)
+            .register();
+
     // Load class
     public static void register() {
     }
