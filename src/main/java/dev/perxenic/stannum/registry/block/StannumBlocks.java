@@ -1,5 +1,6 @@
 package dev.perxenic.stannum.registry.block;
 
+import com.simibubi.create.AllTags;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.perxenic.stannum.registry.StannumMetals;
 import dev.perxenic.stannum.registry.item.StannumItems;
@@ -29,6 +30,8 @@ public class StannumBlocks {
     public static BlockEntry<Block> TIN_BLOCK;
 
     public static BlockEntry<Block> BRONZE_BLOCK;
+
+    public static BlockEntry<TapperBlock> TAPPER;
 
     public static void register() {
         // Tin is known to be natural so ores and raw storage blocks will never be null
@@ -113,6 +116,15 @@ public class StannumBlocks {
                 .transform(tagBlockAndItem(Map.of(
                         StannumMetals.BRONZE.storageBlocks.blocks(), StannumMetals.BRONZE.storageBlocks.items()
                 )))
+                .build()
+                .register();
+
+        TAPPER = REGISTRATE.block("tapper", TapperBlock::new)
+                .properties(p -> p.noOcclusion())
+                .transform(pickaxeOnly())
+                .tag(BlockTags.NEEDS_STONE_TOOL)
+                .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
+                .transform(tagBlockAndItem(Map.of()))
                 .build()
                 .register();
     }

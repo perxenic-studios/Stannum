@@ -3,6 +3,7 @@ package dev.perxenic.stannum;
 import dev.perxenic.stannum.registry.StannumMetals;
 import dev.perxenic.stannum.registry.StannumCreativeModeTabs;
 import dev.perxenic.stannum.registry.block.StannumBlocks;
+import dev.perxenic.stannum.registry.block.entity.StannumBlockEntities;
 import dev.perxenic.stannum.registry.item.StannumItems;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -27,6 +28,7 @@ public class Stannum {
         StannumMetals.register();
 
         StannumBlocks.register();
+        StannumBlockEntities.register();
         StannumItems.register();
         StannumCreativeModeTabs.register(modEventBus);
 
