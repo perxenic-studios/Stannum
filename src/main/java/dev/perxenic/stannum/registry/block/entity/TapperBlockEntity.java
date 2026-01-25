@@ -1,7 +1,22 @@
 package dev.perxenic.stannum.registry.block.entity;
 
+import com.simibubi.create.AllBlockEntityTypes;
+import com.simibubi.create.content.kinetics.mixer.MechanicalMixerBlockEntity;
+import com.simibubi.create.content.processing.basin.BasinBlock;
+import com.simibubi.create.content.processing.basin.BasinBlockEntity;
+import com.simibubi.create.content.processing.basin.BasinInventory;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import com.simibubi.create.foundation.fluid.CombinedTankWrapper;
+import com.simibubi.create.foundation.item.ItemHelper;
+import com.simibubi.create.foundation.item.SmartInventory;
+import net.createmod.catnip.data.Couple;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -14,19 +29,26 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class TapperBlockEntity extends BlockEntity implements MenuProvider {
+public class TapperBlockEntity extends SmartBlockEntity implements MenuProvider {
     public final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -38,41 +60,97 @@ public class TapperBlockEntity extends BlockEntity implements MenuProvider {
         }
     };
 
-    private static final int INPUT_SLOT = 0;
-    private static final int OUTPUT_SLOT = 0;
+    public SmartInventory inputInventory;
+    protected SmartInventory outputInventory;
+    protected SmartFluidTankBehaviour outputTank;
+    private boolean contentsChanged;
 
-    protected final ContainerData data;
-    private int progress = 0;
-    private int maxProgress = 72;
+    private Couple<SmartInventory> invs;
+
+    protected IItemHandlerModifiable itemCapability;
+    protected IFluidHandler fluidCapability;
 
     public TapperBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
+        inputInventory = new SmartInventory(1, this);
+        inputInventory.whenContentsChanged($ -> contentsChanged = true);
+        outputInventory = new SmartInventory(1, this).forbidInsertion()
+                .withMaxStackSize(64);
 
-        data = new ContainerData() {
-            @Override
-            public int get(int i) {
-                return switch (i) {
-                    case 0 -> TapperBlockEntity.this.progress;
-                    case 1 -> TapperBlockEntity.this.maxProgress;
-                    default -> 0;
-                };
-            }
+        itemCapability = new CombinedInvWrapper(inputInventory, outputInventory);
+        contentsChanged = true; // Default contents changed to true to force update
 
-            @Override
-            public void set(int i, int value) {
-                switch (i) {
-                    case 0: TapperBlockEntity.this.progress = value;
-                    case 1: TapperBlockEntity.this.maxProgress = value;
-                }
-            }
-
-            @Override
-            public int getCount() {
-                return 2;
-            }
-        };
+        invs = Couple.create(inputInventory, outputInventory);
     }
 
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                StannumBlockEntities.TAPPER.get(),
+                (be, context) -> be.itemCapability
+        );
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                StannumBlockEntities.TAPPER.get(),
+                (be, context) -> be.fluidCapability
+        );
+    }
+
+    @Override
+    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+        outputTank = new SmartFluidTankBehaviour(SmartFluidTankBehaviour.OUTPUT, this, 1, 4000, true)
+                .whenFluidUpdates(() -> contentsChanged = true)
+                .forbidInsertion();
+        behaviours.add(outputTank);
+
+        fluidCapability = outputTank.getCapability();
+    }
+
+    @Override
+    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+        super.read(compound, registries, clientPacket);
+        inputInventory.deserializeNBT(registries, compound.getCompound("InputItems"));
+        outputInventory.deserializeNBT(registries, compound.getCompound("OutputItems"));
+    }
+
+    @Override
+    public void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+        super.write(compound, registries, clientPacket);
+        compound.put("InputItems", inputInventory.serializeNBT(registries));
+        compound.put("OutputItems", outputInventory.serializeNBT(registries));
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        ItemHelper.dropContents(level, worldPosition, inputInventory);
+        ItemHelper.dropContents(level, worldPosition, outputInventory);
+    }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        invalidateCapabilities();
+    }
+
+    @Override
+    public void lazyTick() {
+        super.lazyTick();
+
+        if (level == null) return;
+
+        if (!level.isClientSide) {
+            notifyChangeOfContents();
+        }
+    }
+
+    public boolean isEmpty() {
+        return inputInventory.isEmpty() && outputInventory.isEmpty() && outputTank.isEmpty();
+    }
+
+    public void notifyChangeOfContents() {
+        contentsChanged = true;
+    }
 
     @Override
     public Component getDisplayName() {
@@ -93,37 +171,5 @@ public class TapperBlockEntity extends BlockEntity implements MenuProvider {
         }
 
         Containers.dropContents(level, worldPosition, inventory);
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        tag.put("inventory", itemHandler.serializeNBT(registries));
-        tag.putInt("tapper.progress", progress);
-        tag.putInt("tapper.max_progress", maxProgress);
-
-        super.saveAdditional(tag, registries);
-    }
-
-    @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-
-        itemHandler.deserializeNBT(registries, tag.getCompound("inventory"));
-        progress = tag.getInt("tapper.progress");
-        maxProgress = tag.getInt("tapper.max_progress");
-    }
-
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return saveWithoutMetadata(registries);
-    }
-
-    @Override
-    public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    public void tick(Level level, BlockPos blockPos, BlockState blockState) {
-
     }
 }

@@ -98,13 +98,4 @@ public class TapperBlock extends BaseEntityBlock implements IBE<TapperBlockEntit
 
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
-
-    @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        if (level.isClientSide) return null;
-
-        return createTickerHelper(blockEntityType, StannumBlockEntities.TAPPER.get(), (tickerLevel, blockPos, blockState, blockEntity) -> {
-            blockEntity.tick(tickerLevel, blockPos, blockState);
-        });
-    }
 }
