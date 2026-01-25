@@ -1,28 +1,22 @@
 package dev.perxenic.stannum.registry.block.entity;
 
-import com.simibubi.create.AllBlockEntityTypes;
-import com.simibubi.create.content.kinetics.mixer.MechanicalMixerBlockEntity;
-import com.simibubi.create.content.processing.basin.BasinBlock;
-import com.simibubi.create.content.processing.basin.BasinBlockEntity;
-import com.simibubi.create.content.processing.basin.BasinInventory;
+
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import com.simibubi.create.foundation.fluid.CombinedTankWrapper;
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.item.SmartInventory;
+import com.simibubi.create.foundation.utility.CreateLang;
+import dev.perxenic.stannum.util.StannumLang;
 import net.createmod.catnip.data.Couple;
-import net.createmod.catnip.data.Iterate;
+import net.createmod.catnip.lang.LangBuilder;
+import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -30,14 +24,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
@@ -48,7 +41,7 @@ import java.util.List;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class TapperBlockEntity extends SmartBlockEntity implements MenuProvider {
+public class TapperBlockEntity extends SmartBlockEntity implements MenuProvider, IHaveGoggleInformation {
     public final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -155,6 +148,53 @@ public class TapperBlockEntity extends SmartBlockEntity implements MenuProvider 
     @Override
     public Component getDisplayName() {
         return Component.translatable("block.stannum.tapper");
+    }
+
+    @Override
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        StannumLang.translate("gui.goggles.tapper_contents")
+                .forGoggles(tooltip);
+
+        if (itemCapability == null)
+            itemCapability = new ItemStackHandler();
+        if (fluidCapability == null)
+            fluidCapability = new FluidTank(0);
+
+        boolean isEmpty = true;
+
+        for (int i = 0; i < itemCapability.getSlots(); i++) {
+            ItemStack stackInSlot = itemCapability.getStackInSlot(i);
+            if (stackInSlot.isEmpty())
+                continue;
+            StannumLang.text("")
+                    .add(Component.translatable(stackInSlot.getDescriptionId())
+                            .withStyle(ChatFormatting.GRAY))
+                    .add(StannumLang.text(" x" + stackInSlot.getCount())
+                            .style(ChatFormatting.GREEN))
+                    .forGoggles(tooltip, 1);
+            isEmpty = false;
+        }
+
+        LangBuilder mb = CreateLang.translate("generic.unit.millibuckets");
+        for (int i = 0; i < fluidCapability.getTanks(); i++) {
+            FluidStack fluidStack = fluidCapability.getFluidInTank(i);
+            if (fluidStack.isEmpty())
+                continue;
+            StannumLang.text("")
+                    .add(StannumLang.fluidName(fluidStack)
+                            .add(StannumLang.text(" "))
+                            .style(ChatFormatting.GRAY)
+                            .add(StannumLang.number(fluidStack.getAmount())
+                                    .add(mb)
+                                    .style(ChatFormatting.BLUE)))
+                    .forGoggles(tooltip, 1);
+            isEmpty = false;
+        }
+
+        if (isEmpty)
+            tooltip.remove(0);
+
+        return true;
     }
 
     @Override

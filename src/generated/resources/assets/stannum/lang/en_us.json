@@ -10,5 +10,6 @@
   "item.stannum.raw_tin": "Raw Tin",
   "item.stannum.tin_ingot": "Tin Ingot",
   "item.stannum.tin_nugget": "Tin Nugget",
-  "itemGroup.stannum.base": "Stannum"
+  "itemGroup.stannum.base": "Stannum",
+  "stannum.gui.goggles.tapper_contents": "Tapper Contents:"
 }
