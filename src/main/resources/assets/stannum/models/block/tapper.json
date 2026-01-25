@@ -1,6 +1,8 @@
 {
 	"format_version": "1.9.0",
+	"parent": "create:block/block",
 	"credit": "Made with Blockbench",
+	"render_type": "minecraft:cutout_mipped",
 	"textures": {
 		"1": "create:block/pipes",
 		"2": "stannum:block/tapper",
