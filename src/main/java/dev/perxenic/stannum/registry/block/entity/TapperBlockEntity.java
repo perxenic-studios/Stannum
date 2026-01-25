@@ -26,6 +26,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -41,6 +43,7 @@ import java.util.List;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
+@EventBusSubscriber
 public class TapperBlockEntity extends SmartBlockEntity implements MenuProvider, IHaveGoggleInformation {
     public final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
@@ -76,6 +79,7 @@ public class TapperBlockEntity extends SmartBlockEntity implements MenuProvider,
         invs = Couple.create(inputInventory, outputInventory);
     }
 
+    @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,

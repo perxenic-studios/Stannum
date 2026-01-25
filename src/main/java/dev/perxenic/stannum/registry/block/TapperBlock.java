@@ -3,9 +3,13 @@ package dev.perxenic.stannum.registry.block;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.content.fluids.transfer.GenericItemEmptying;
+import com.simibubi.create.content.fluids.transfer.GenericItemFilling;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.foundation.block.IBE;
+import com.simibubi.create.foundation.fluid.FluidHelper;
 import com.simibubi.create.foundation.item.ItemHelper;
+import dev.perxenic.stannum.Stannum;
 import dev.perxenic.stannum.registry.block.entity.StannumBlockEntities;
 import dev.perxenic.stannum.registry.block.entity.TapperBlockEntity;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -17,6 +21,7 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -29,6 +34,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -96,20 +104,40 @@ public class TapperBlock extends BaseEntityBlock implements IBE<TapperBlockEntit
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        // Add code to allow for interactions with held containers
+        return onBlockEntityUseItemOn(level, pos, be -> {
+            if (!stack.isEmpty()) {
+                if (FluidHelper.tryFillItemFromBE(level, player, hand, stack, be)) {
+                    Stannum.LOGGER.info("Tried to fill item!");
+                    return ItemInteractionResult.SUCCESS;
+                }
 
-        if (!level.isClientSide) {
-            // If clicking with a wrench, use default wrench behaviour
-            if (stack.is(AllItems.WRENCH)) return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
-
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof TapperBlockEntity tapperBlockEntity) {
-                player.openMenu(new SimpleMenuProvider(tapperBlockEntity, Component.translatable("block.stannum.tapper")), pos);
-            } else {
-                throw new IllegalStateException("Container provider is missing!");
+                if (GenericItemFilling.canItemBeFilled(level, stack)) {
+                    Stannum.LOGGER.info("Item can be filled!");
+                    return ItemInteractionResult.SUCCESS;
+                }
+                if (stack.getItem().equals(Items.SPONGE)) {
+                    Stannum.LOGGER.info("Item is a sponge!");
+                    IFluidHandler fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
+                    if (fluidHandler != null) {
+                        FluidStack drained = fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+                        if (!drained.isEmpty()) {
+                            return ItemInteractionResult.SUCCESS;
+                        }
+                    }
+                }
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             }
-        }
 
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            if (!level.isClientSide) {
+                BlockEntity blockEntity = level.getBlockEntity(pos);
+                if (blockEntity instanceof TapperBlockEntity tapperBlockEntity) {
+                    player.openMenu(new SimpleMenuProvider(tapperBlockEntity, Component.translatable("block.stannum.tapper")), pos);
+                } else {
+                    throw new IllegalStateException("Container provider is missing!");
+                }
+            }
+
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        });
     }
 }
