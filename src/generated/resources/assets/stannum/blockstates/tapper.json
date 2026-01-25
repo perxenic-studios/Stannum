@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "stannum:block/tapper",
+      "y": 90
+    },
+    "facing=north": {
       "model": "stannum:block/tapper"
+    },
+    "facing=south": {
+      "model": "stannum:block/tapper",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "stannum:block/tapper",
+      "y": 270
     }
   }
 }

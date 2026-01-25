@@ -10,7 +10,7 @@ public class StannumBlockEntities {
     public static final BlockEntityEntry<TapperBlockEntity> TAPPER = REGISTRATE
             .blockEntity("tapper", TapperBlockEntity::new)
             .validBlocks(StannumBlocks.TAPPER)
-            .renderer(() -> TapperBER::new)
+            .renderer(() -> TapperRenderer::new)
             .register();
 
     // Load class

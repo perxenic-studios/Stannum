@@ -145,6 +145,18 @@ public class TapperBlockEntity extends SmartBlockEntity implements MenuProvider,
         return inputInventory.isEmpty() && outputInventory.isEmpty() && outputTank.isEmpty();
     }
 
+    public float getTotalFluidUnits(float partialTicks) {
+        SmartFluidTankBehaviour.TankSegment tankSegment = outputTank.getPrimaryTank();
+        if (tankSegment.getRenderedFluid()
+                .isEmpty())
+            return 0;
+        float units = tankSegment.getTotalUnits(partialTicks);
+        if (units < 1)
+            return 0;
+
+        return units;
+    }
+
     public void notifyChangeOfContents() {
         contentsChanged = true;
     }

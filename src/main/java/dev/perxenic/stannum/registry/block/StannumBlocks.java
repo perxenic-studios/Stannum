@@ -4,6 +4,7 @@ import com.simibubi.create.AllTags;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.perxenic.stannum.registry.StannumMetals;
 import dev.perxenic.stannum.registry.item.StannumItems;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -19,6 +20,7 @@ import net.neoforged.neoforge.common.Tags;
 
 import java.util.Map;
 
+import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 import static com.simibubi.create.foundation.data.TagGen.tagBlockAndItem;
 import static dev.perxenic.stannum.Stannum.REGISTRATE;
@@ -122,9 +124,10 @@ public class StannumBlocks {
         TAPPER = REGISTRATE.block("tapper", TapperBlock::new)
                 .properties(p -> p.noOcclusion())
                 .transform(pickaxeOnly())
+                .blockstate(new TapperGenerator()::generate)
                 .tag(BlockTags.NEEDS_STONE_TOOL)
                 .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
-                .transform(tagBlockAndItem(Map.of()))
+                .item()
                 .build()
                 .register();
     }
