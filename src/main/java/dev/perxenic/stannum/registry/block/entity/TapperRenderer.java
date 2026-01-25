@@ -38,7 +38,7 @@ public class TapperRenderer extends SmartBlockEntityRenderer<TapperBlockEntity> 
 
         final float xMin = 0.01f / 16f;
         final float xMax = 15.99f / 16f;
-        final float yMin = 2.01f / 16f;
+        final float yMin = 4.01f / 16f;
         final float yMax = yMin + 5.98f / 16f * fluidLevel;
         final float zMin = 10.01f / 16f;
         final float zMax = 15.99f / 16f;
