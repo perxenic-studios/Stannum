@@ -145,6 +145,14 @@ public class TapperBlockEntity extends SmartBlockEntity implements MenuProvider,
         contentsChanged = true;
     }
 
+    public SmartInventory getInputInventory() {
+        return inputInventory;
+    }
+
+    public SmartInventory getOutputInventory() {
+        return outputInventory;
+    }
+
     @Override
     public Component getDisplayName() {
         return Component.translatable("block.stannum.tapper");

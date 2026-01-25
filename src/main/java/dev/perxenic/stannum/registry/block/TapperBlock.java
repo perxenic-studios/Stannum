@@ -3,7 +3,9 @@ package dev.perxenic.stannum.registry.block;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.foundation.block.IBE;
+import com.simibubi.create.foundation.item.ItemHelper;
 import dev.perxenic.stannum.registry.block.entity.StannumBlockEntities;
 import dev.perxenic.stannum.registry.block.entity.TapperBlockEntity;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -78,6 +80,18 @@ public class TapperBlock extends BaseEntityBlock implements IBE<TapperBlockEntit
         }
 
         super.onRemove(state, level, pos, newState, movedByPiston);
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
+        return getBlockEntityOptional(worldIn, pos).map(TapperBlockEntity::getInputInventory)
+                .map(ItemHelper::calcRedstoneFromInventory)
+                .orElse(0);
     }
 
     @Override
