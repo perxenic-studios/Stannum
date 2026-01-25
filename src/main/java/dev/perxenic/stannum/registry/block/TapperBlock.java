@@ -90,7 +90,7 @@ public class TapperBlock extends BaseEntityBlock implements IBE<TapperBlockEntit
 
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof TapperBlockEntity tapperBlockEntity) {
-                player.openMenu(new SimpleMenuProvider(tapperBlockEntity, Component.translatable("container.stannum.tapper")), pos);
+                player.openMenu(new SimpleMenuProvider(tapperBlockEntity, Component.translatable("block.stannum.tapper")), pos);
             } else {
                 throw new IllegalStateException("Container provider is missing!");
             }
