@@ -1,6 +1,7 @@
 package dev.perxenic.stannum.infra.data.recipe;
 
 import com.google.common.collect.ImmutableList;
+import com.simibubi.create.AllBlocks;
 import dev.perxenic.stannum.registry.block.StannumBlocks;
 import dev.perxenic.stannum.registry.item.StannumItems;
 import net.minecraft.core.HolderLookup;
@@ -65,6 +66,27 @@ public final class StannumRecipeGen extends RecipeProvider {
                 "raw_tin_block",
                 "tin"
         );
+
+        metalStorage(
+                recipeOutput,
+                StannumItems.BRONZE_NUGGET,
+                StannumItems.BRONZE_INGOT,
+                StannumBlocks.BRONZE_BLOCK,
+                "bronze"
+        );
+
+        new ShapedRecipeBuilder(
+                RecipeCategory.MISC,
+                StannumBlocks.TAPPER.asStack())
+                .pattern("/")
+                .pattern("#")
+                .pattern("O")
+                .define('/', AllBlocks.FLUID_PIPE)
+                .define('#', AllBlocks.COPPER_CASING)
+                .define('O', AllBlocks.FLUID_TANK)
+                .group("machine")
+                .unlockedBy("has_fluid_tank", has(AllBlocks.FLUID_TANK))
+                .save(recipeOutput, snLoc("tapper_recipe"));
     }
 
     protected static void oreSmelting(

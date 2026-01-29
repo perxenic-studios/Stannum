@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "machine",
+  "key": {
+    "#": {
+      "item": "create:copper_casing"
+    },
+    "/": {
+      "item": "create:fluid_pipe"
+    },
+    "O": {
+      "item": "create:fluid_tank"
+    }
+  },
+  "pattern": [
+    "/",
+    "#",
+    "O"
+  ],
+  "result": {
+    "count": 1,
+    "id": "stannum:tapper"
+  }
+}
