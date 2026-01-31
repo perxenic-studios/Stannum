@@ -20,7 +20,7 @@ public class StannumCreativeModeTabs {
             () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.%s.base".formatted(MOD_ID)))
                     .withTabsBefore(AllCreativeModeTabs.BASE_CREATIVE_TAB.getKey())
-                    .icon(() -> StannumItems.TIN_INGOT.asStack()) //TODO: Replace with actual item from the mod
+                    .icon(() -> StannumItems.TIN_INGOT.asStack())
                     .build());
 
     public static void register(IEventBus modEventBus) {
